@@ -22,45 +22,45 @@ module "vpc" {
 ##############################
 ##### Database
 ##############################
-# module "sg_rds" {
-#   source  = "terraform-aws-modules/security-group/aws"
-#   version = "5.2.0"
+module "sg_rds" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "5.2.0"
 
-#   name        = "${var.rds_name}-sg"
-#   description = "Security group of RDS ${var.rds_name}"
-#   vpc_id      = module.vpc.vpc_id
+  name        = "${var.rds_name}-sg"
+  description = "Security group of RDS ${var.rds_name}"
+  vpc_id      = module.vpc.vpc_id
 
-#   ingress_with_cidr_blocks = [
-#     {
-#       from_port   = 3306
-#       to_port     = 3306
-#       protocol    = "tcp"
-#       description = "Allow VPC CIDR to connect to RDS"
-#       cidr_blocks = var.vpc_cidr
-#     }
-#   ]
-# }
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 3306
+      to_port     = 3306
+      protocol    = "tcp"
+      description = "Allow VPC CIDR to connect to RDS"
+      cidr_blocks = var.vpc_cidr
+    }
+  ]
+}
 
-# module "rds" {
-#   source  = "terraform-aws-modules/rds/aws"
-#   version = "6.9.0"
+module "rds" {
+  source  = "terraform-aws-modules/rds/aws"
+  version = "6.9.0"
 
-#   subnet_ids             = module.vpc.database_subnets
-#   db_subnet_group_name   = module.vpc.database_subnet_group
-#   vpc_security_group_ids = [module.sg_rds.security_group_id]
+  subnet_ids             = module.vpc.database_subnets
+  db_subnet_group_name   = module.vpc.database_subnet_group
+  vpc_security_group_ids = [module.sg_rds.security_group_id]
 
-#   identifier = var.rds_name
+  identifier = var.rds_name
 
-#   username             = "root"
-#   engine               = var.rds_engine
-#   family               = "${var.rds_family}${var.rds_engine_version}"
-#   engine_version       = var.rds_engine_version
-#   major_engine_version = var.rds_engine_version # split(".", var.rds_engine_version)[0]
-#   instance_class       = var.rds_instance_type
-#   db_name              = var.rds_db_name
-#   allocated_storage    = "10"
-#   skip_final_snapshot  = true
-# }
+  username             = "root"
+  engine               = var.rds_engine
+  family               = "${var.rds_family}${var.rds_engine_version}"
+  engine_version       = var.rds_engine_version
+  major_engine_version = var.rds_engine_version # split(".", var.rds_engine_version)[0]
+  instance_class       = var.rds_instance_type
+  db_name              = var.rds_db_name
+  allocated_storage    = "10"
+  skip_final_snapshot  = true
+}
 
 ##############################
 ##### Headscale
@@ -208,6 +208,13 @@ module "ec2_headscale" {
   })
   user_data_base64 = base64encode(data.template_file.headscale_user_data.rendered)
 
+  metadata_options = {
+    http_tokens = "required"
+  }
+  root_block_device = [
+    { encrypted = true }
+  ]
+
   tags = var.tags
 }
 
@@ -314,6 +321,13 @@ module "ec2_subnet_router" {
   })
   user_data_base64 = base64encode(data.template_file.subnet_router.rendered)
 
+  metadata_options = {
+    http_tokens = "required"
+  }
+  root_block_device = [
+    { encrypted = true }
+  ]
+
   tags = var.tags
 }
 
@@ -374,6 +388,13 @@ module "ec2_private_service" {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
   })
   user_data_base64 = base64encode(data.template_file.private_service.rendered)
+
+  metadata_options = {
+    http_tokens = "required"
+  }
+  root_block_device = [
+    { encrypted = true }
+  ]
 
   tags = var.tags
 }
@@ -461,6 +482,13 @@ module "ec2_derp" {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
   })
   user_data_base64 = base64encode(data.template_file.derp.rendered)
+
+  metadata_options = {
+    http_tokens = "required"
+  }
+  root_block_device = [
+    { encrypted = true }
+  ]
 
   tags = var.tags
 }
