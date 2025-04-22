@@ -1,5 +1,5 @@
 # VPN - Headscale
-This is a demo repository for my [blog post](http://felipetrindade.com/headscale)
+This is a demo repository for my [blog post](http://felipetrindade.com/vpn)
 
 Prerequisites:
 - Public Hosted Zone with Domain configured in Route 53
