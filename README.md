@@ -1,5 +1,7 @@
 # VPN - Headscale
-This is a demo repository for my [blog post](http://felipetrindade.com/vpn)
+This is a demo repository for my [blog post](http://felipetrindade.com/vpn). Here is the architecture created in this demo:
+
+![Architecture](./docs/Headscale.drawio.png)
 
 Prerequisites:
 - Public Hosted Zone with Domain configured in Route 53
@@ -75,6 +77,10 @@ tailscale up --accept-dns --accept-routes \
 ```
 
 Run `tailscale status`. You will see the `subnet-router` there!
+
+If you check the Headscale Admin dashboard it should look like this:
+
+![Headscale Admin Dashboard](./docs/dashboard.png)
 
 10) Reach private server
 
