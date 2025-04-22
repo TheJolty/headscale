@@ -6,8 +6,8 @@
     "git@latest",
     "pre-commit@4.0.1",
     "terraform-docs@0.19.0",
-    "trivy@0.59.1",
-    "tflint@0.55.1"
+    "tflint@0.55.1",
+    "trivy@0.61.0"
   ],
   "shell": {
     "init_hook": [
