@@ -84,7 +84,7 @@ If you check the Headscale Admin dashboard it should look like this:
 
 10) Reach private server
 
-We deployed an EC2 with an NGINX installed (pretend it's a real application). The internal Route53 Hosted zone was a DNS record called `service.internal` that points to this service. Open your browser and try to reach `http://service.internal/`.
+We deployed an EC2 with an NGINX installed (pretend it's a real application). The internal Route53 Hosted zone has a DNS record called `service.internal` that points to this service. Open your browser and try to reach `http://service.internal/`.
 
 The Subnet Router is being configured as the DNS server of the Tailnet in the Headscale configuration. Because of that, we are also installing `dnsmasq` to resolve all ".internal" domains.
 
